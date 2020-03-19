@@ -44,12 +44,24 @@ public class RequestHandler extends AsyncTask<String , String, String> {
                 InputStream ir = httpURLConnection.getInputStream();
                 BufferedReader input =  new BufferedReader(new InputStreamReader(ir));
                 output = input.readLine();
-                Log.e("Output", "out :"+output);
+               // Log.e("Output", "out :"+output);
 
             }
             else if(Home.key.equals("fetch"))
             {
-
+                JSONObject data = new JSONObject();
+                data.put("action", Home.key);
+                data.put("CaseNo",strings[0]);
+                writer.write(data.toString());
+                writer.close();
+                InputStream ir = httpURLConnection.getInputStream();
+                BufferedReader input =  new BufferedReader(new InputStreamReader(ir));
+                String line = " ";
+                while(line != null)
+                {
+                    line = input.readLine();
+                    output = output+line;
+                }
             }
 
         } catch (MalformedURLException e) {
@@ -71,6 +83,9 @@ public class RequestHandler extends AsyncTask<String , String, String> {
             Toast.makeText(Admin_Home.adminHome,"Data Successfully Stored",Toast.LENGTH_LONG).show();
             ((Admin_Home) Admin_Home.adminClose).finish();
         }
-
+        else
+        {
+            User_Home.caseNumber.setText(output);
+        }
     }
 }
